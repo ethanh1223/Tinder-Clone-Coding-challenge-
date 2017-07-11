@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": false,
   "scripts": {
-    // "start": "webpack --watch & nodemon server/server.js"
+    "start": "webpack --watch & nodemon server/server.js"
   },
   "dependencies": {
     "babel-core": "^6.24.1",
@@ -14,7 +14,10 @@
     "express": "^4.15.3",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
+    "redux": "^3.7.1",
+    "redux-promise": "^0.5.3",
     "webpack": "^2.6.1"
   }
 }
