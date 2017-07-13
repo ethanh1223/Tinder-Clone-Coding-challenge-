@@ -4,26 +4,3 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
-
-h1{
-  flex:1;
-}
-
-.container{
-  display: flex;
-}
-
-#weightClassDropdownContainer{
-}
-
-#newsContainer{
-  flex: 1;
-}
-
-#eventsContainer{
-  flex: 1;
-}
-
-.dropdownHeader{
-  text-align: 'center';
-}

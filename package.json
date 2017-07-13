@@ -1,5 +1,5 @@
 {
-  "name": "ReactReduxNodestarter",
+  "name": "TinderClone2",
   "version": "0.0.0",
   "private": false,
   "scripts": {
@@ -12,10 +12,13 @@
     "babel-preset-react": "^6.24.1",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "material-ui": "^0.18.6",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
+    "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.7.1",
     "redux-promise": "^0.5.3",
     "webpack": "^2.6.1"
