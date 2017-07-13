@@ -5,6 +5,9 @@ import Toggle from 'material-ui/Toggle';
 
 //Create expandable Chat Window component to be rendered for each match.
 
+//Stateful React Component
+//NOT Redux container (doesn't need to know app-level state)
+
 export default class ChatWindow extends React.Component {
 
   constructor(props) {

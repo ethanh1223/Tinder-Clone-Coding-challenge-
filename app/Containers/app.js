@@ -5,52 +5,37 @@ import { bindActionCreators } from 'redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
 import ProfileViewer from './ProfileViewer.js';
-import ChatContainer from './ChatContainer.js';
+import ChatContainer from '../Components/ChatContainer.js';
 
 import { switchTab } from '../Actions/index.js';
 import { SWIPE, CHAT } from '../Reducers/currentTabReducer.js';
 
+//App container -- use MaterialUI tabs to render Swipe and Chat views
 
+//Stateless React Component
+//Redux Container (DOES need to know app-level state)
 
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
-};
+const App = (props) => {
 
-
-class App extends React.Component {
-
-  constructor(props) {
-    super(props);
-
-    this.handleTabClick = this.handleTabClick.bind(this);
+  const handleTabClick = (e) => {
+    props.switchTab(e.target.innerText)
   }
 
-  handleTabClick(e) {
-    this.props.switchTab(e.target.innerText)
-  }
+  return (
+    <Tabs value={props.currentTab}>
+      <Tab onClick={handleTabClick.bind(this)} label={SWIPE} value={SWIPE}>
+        <h2 className='tabHeadline'>Swipe</h2>
+        <ProfileViewer handleTabClick={handleTabClick.bind(this)} />
+      </Tab>
 
-  render() {
-    return (
-      <Tabs value={this.props.currentTab}>
-        <Tab onClick={this.handleTabClick} label={SWIPE} value={SWIPE}>
-          <h2 style={styles.headline}>Swipe</h2>
-          <ProfileViewer handleTabClick={this.handleTabClick} />
-        </Tab>
-
-        <Tab onClick={this.handleTabClick} label={CHAT} value={CHAT}>
-          <div>
-            <h2 style={styles.headline}>Chat</h2>
-              <ChatContainer matchedUsers={this.props.matchedUsers} />
-          </div>
-        </Tab>
-      </Tabs>
-    )
-  }
+      <Tab onClick={handleTabClick.bind(this)} label={CHAT} value={CHAT}>
+        <div>
+          <h2 className='tabHeadline'>Chat</h2>
+            <ChatContainer matchedUsers={props.matchedUsers} />
+        </div>
+      </Tab>
+    </Tabs>
+  )
 }
 
 function mapStateToProps(state) {

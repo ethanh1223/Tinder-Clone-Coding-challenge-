@@ -1,3 +1,5 @@
+//Sets random user received from app
+
 import { SET_SWIPE_USER } from '../Actions/index.js';
 
 export default function(state = '', action) {

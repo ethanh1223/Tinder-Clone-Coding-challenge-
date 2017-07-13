@@ -8,6 +8,14 @@ import Profile from '../Components/Profile.js';
 
 import { CHAT } from '../Reducers/currentTabReducer.js';
 
+//Profile viewer -- handles a lot of "Matching" views and Component-level logic
+  //Randomly selects a user to surface for "swiping" and passes user to Redux
+  //Tells Redux whether we "like" or "dislike" a user
+  //Handles state of match notification dialog box in Profile child component
+
+//Stateful React Component
+//Redux Container (DOES need to know app-level state)
+
 class ProfileViewer extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +41,6 @@ class ProfileViewer extends React.Component {
 
     this.props.chooseNextSwipeUser(randomIndex);
     this.props.setNextSwipeUser(randomUser);
-    
   }
 
   handleNotificationOpen() {
@@ -46,7 +53,7 @@ class ProfileViewer extends React.Component {
 
   }
 
-    handleNotificationCloseSwipe() {
+  handleNotificationCloseSwipe() {
     this.setState({open: false});
   }
 

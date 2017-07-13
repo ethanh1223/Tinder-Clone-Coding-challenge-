@@ -4461,7 +4461,8 @@ exports.default = function () {
 
 var _index = __webpack_require__(38);
 
-var SWIPE = exports.SWIPE = 'SWIPE';
+var SWIPE = exports.SWIPE = 'SWIPE'; //Sets active tab (Chat or Swipe) based on action received.
+
 var CHAT = exports.CHAT = 'CHAT';
 
 /***/ }),
@@ -9785,6 +9786,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//Profile viewer -- handles a lot of "Matching" views and Component-level logic
+//Randomly selects a user to surface for "swiping" and passes user to Redux
+//Tells Redux whether we "like" or "dislike" a user
+//Handles state of match notification dialog box in Profile child component
+
+//Stateful React Component
+//Redux Container (DOES need to know app-level state)
 
 var ProfileViewer = function (_React$Component) {
   _inherits(ProfileViewer, _React$Component);
@@ -16548,8 +16557,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
@@ -16564,7 +16571,7 @@ var _ProfileViewer = __webpack_require__(123);
 
 var _ProfileViewer2 = _interopRequireDefault(_ProfileViewer);
 
-var _ChatContainer = __webpack_require__(208);
+var _ChatContainer = __webpack_require__(501);
 
 var _ChatContainer2 = _interopRequireDefault(_ChatContainer);
 
@@ -16574,74 +16581,46 @@ var _currentTabReducer = __webpack_require__(61);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+//App container -- use MaterialUI tabs to render Swipe and Chat views
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+//Stateless React Component
+//Redux Container (DOES need to know app-level state)
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var App = function App(props) {
 
-var styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400
-  }
-};
+  var handleTabClick = function handleTabClick(e) {
+    props.switchTab(e.target.innerText);
+  };
 
-var App = function (_React$Component) {
-  _inherits(App, _React$Component);
-
-  function App(props) {
-    _classCallCheck(this, App);
-
-    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
-
-    _this.handleTabClick = _this.handleTabClick.bind(_this);
-    return _this;
-  }
-
-  _createClass(App, [{
-    key: 'handleTabClick',
-    value: function handleTabClick(e) {
-      this.props.switchTab(e.target.innerText);
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        _Tabs.Tabs,
-        { value: this.props.currentTab },
+  return _react2.default.createElement(
+    _Tabs.Tabs,
+    { value: props.currentTab },
+    _react2.default.createElement(
+      _Tabs.Tab,
+      { onClick: handleTabClick.bind(undefined), label: _currentTabReducer.SWIPE, value: _currentTabReducer.SWIPE },
+      _react2.default.createElement(
+        'h2',
+        { className: 'tabHeadline' },
+        'Swipe'
+      ),
+      _react2.default.createElement(_ProfileViewer2.default, { handleTabClick: handleTabClick.bind(undefined) })
+    ),
+    _react2.default.createElement(
+      _Tabs.Tab,
+      { onClick: handleTabClick.bind(undefined), label: _currentTabReducer.CHAT, value: _currentTabReducer.CHAT },
+      _react2.default.createElement(
+        'div',
+        null,
         _react2.default.createElement(
-          _Tabs.Tab,
-          { onClick: this.handleTabClick, label: _currentTabReducer.SWIPE, value: _currentTabReducer.SWIPE },
-          _react2.default.createElement(
-            'h2',
-            { style: styles.headline },
-            'Swipe'
-          ),
-          _react2.default.createElement(_ProfileViewer2.default, { handleTabClick: this.handleTabClick })
+          'h2',
+          { className: 'tabHeadline' },
+          'Chat'
         ),
-        _react2.default.createElement(
-          _Tabs.Tab,
-          { onClick: this.handleTabClick, label: _currentTabReducer.CHAT, value: _currentTabReducer.CHAT },
-          _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(
-              'h2',
-              { style: styles.headline },
-              'Chat'
-            ),
-            _react2.default.createElement(_ChatContainer2.default, { matchedUsers: this.props.matchedUsers })
-          )
-        )
-      );
-    }
-  }]);
-
-  return App;
-}(_react2.default.Component);
+        _react2.default.createElement(_ChatContainer2.default, { matchedUsers: props.matchedUsers })
+      )
+    )
+  );
+};
 
 function mapStateToProps(state) {
   return {
@@ -16875,6 +16854,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Create expandable Chat Window component to be rendered for each match.
 
+//Stateful React Component
+//NOT Redux container (doesn't need to know app-level state)
+
 var ChatWindow = function (_React$Component) {
   _inherits(ChatWindow, _React$Component);
 
@@ -16958,8 +16940,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
@@ -16990,153 +16970,74 @@ var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+//Use Material UI to build out user profile
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+//Stateless React Component
+//NOT Redux container (doesn't need to know app-level state)
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var Profile = function Profile(props) {
 
-//NEED TO CHANGE TO STATELESS (FUNCTIONAL) COMPONENT
+  var actions = [_react2.default.createElement(_FlatButton2.default, {
+    label: 'Keep Swiping',
+    primary: true,
+    onClick: props.handleNotificationCloseSwipe
+  }), _react2.default.createElement(_FlatButton2.default, {
+    label: 'Go to Chat',
+    primary: true,
+    keyboardFocused: true,
+    onClick: props.handleNotificationCloseChat
+  })];
 
-var Profile = function (_React$Component) {
-  _inherits(Profile, _React$Component);
-
-  function Profile(props) {
-    _classCallCheck(this, Profile);
-
-    return _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
-  }
-
-  //Use Material UI to build out user profile
-
-
-  _createClass(Profile, [{
-    key: 'render',
-    value: function render() {
-
-      var actions = [_react2.default.createElement(_FlatButton2.default, {
-        label: 'Keep Swiping',
-        primary: true,
-        onClick: this.props.handleNotificationCloseSwipe
-      }), _react2.default.createElement(_FlatButton2.default, {
-        label: 'Go to Chat',
-        primary: true,
-        keyboardFocused: true,
-        onClick: this.props.handleNotificationCloseChat
-      })];
-      return _react2.default.createElement(
-        'div',
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      _Card.Card,
+      {
+        style: {
+          maxWidth: '50%',
+          margin: '0 auto'
+        }
+      },
+      _react2.default.createElement(
+        _Card.CardMedia,
         null,
-        _react2.default.createElement(
-          _Card.Card,
-          {
-            style: {
-              maxWidth: '50%',
-              margin: '0 auto'
-            }
-          },
-          _react2.default.createElement(
-            _Card.CardMedia,
-            null,
-            _react2.default.createElement('img', {
-              className: 'profilePhoto',
-              src: this.props.user.photo,
-              alt: '',
-              style: {
-                //As needed
-              } })
-          ),
-          _react2.default.createElement(_Card.CardTitle, { title: this.props.user.name, subtitle: this.props.user.location }),
-          _react2.default.createElement(
-            _Card.CardText,
-            null,
-            this.props.user.personalInfo
-          ),
-          _react2.default.createElement(
-            _Card.CardActions,
-            null,
-            _react2.default.createElement(_RaisedButton2.default, { onClick: this.props.swipeLeft, icon: _react2.default.createElement(_close2.default, { color: _colors.red500 }), label: 'PASS' }),
-            _react2.default.createElement(_RaisedButton2.default, { onClick: this.props.swipeRight, icon: _react2.default.createElement(_check2.default, { color: _colors.green500 }), label: 'LIKE' })
-          )
-        ),
-        _react2.default.createElement(
-          _Dialog2.default,
-          {
-            title: 'You\'ve got a match!',
-            actions: actions,
-            modal: false,
-            open: this.props.open,
-            onRequestClose: this.props.handleNotificationClose
-          },
-          'You and this user have both "liked" each other. You may continue swiping or go chat with your new match!'
-        )
-      );
-    }
-  }]);
-
-  return Profile;
-}(_react2.default.Component);
+        _react2.default.createElement('img', {
+          className: 'profilePhoto',
+          src: props.user.photo,
+          alt: '' })
+      ),
+      _react2.default.createElement(_Card.CardTitle, { title: props.user.name, subtitle: props.user.location }),
+      _react2.default.createElement(
+        _Card.CardText,
+        null,
+        props.user.personalInfo
+      ),
+      _react2.default.createElement(
+        _Card.CardActions,
+        null,
+        _react2.default.createElement(_RaisedButton2.default, { onClick: props.swipeLeft, icon: _react2.default.createElement(_close2.default, { color: _colors.red500 }), label: 'PASS' }),
+        _react2.default.createElement(_RaisedButton2.default, { onClick: props.swipeRight, icon: _react2.default.createElement(_check2.default, { color: _colors.green500 }), label: 'LIKE' })
+      )
+    ),
+    _react2.default.createElement(
+      _Dialog2.default,
+      {
+        title: 'You\'ve got a match!',
+        actions: actions,
+        modal: false,
+        open: props.open,
+        onRequestClose: props.handleNotificationClose
+      },
+      'You and this user have both "liked" each other. You may continue swiping or go chat with your new match!'
+    )
+  );
+};
 
 exports.default = Profile;
 
 /***/ }),
-/* 208 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _ChatWindow = __webpack_require__(206);
-
-var _ChatWindow2 = _interopRequireDefault(_ChatWindow);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //Map over all matches and create Chat components
-
-
-var ChatContainer = function (_React$Component) {
-  _inherits(ChatContainer, _React$Component);
-
-  function ChatContainer(props) {
-    _classCallCheck(this, ChatContainer);
-
-    return _possibleConstructorReturn(this, (ChatContainer.__proto__ || Object.getPrototypeOf(ChatContainer)).call(this, props));
-  }
-
-  _createClass(ChatContainer, [{
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        this.props.matchedUsers.map(function (user) {
-          return _react2.default.createElement(_ChatWindow2.default, { key: user.name, user: user });
-        })
-      );
-    }
-  }]);
-
-  return ChatContainer;
-}(_react2.default.Component);
-
-exports.default = ChatContainer;
-
-/***/ }),
+/* 208 */,
 /* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17186,7 +17087,8 @@ exports.default = function () {
 
 var _index = __webpack_require__(38);
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } //When we "like" a user, we check if user likes us as well
+//If they do, we add to "matched users"
 
 /***/ }),
 /* 211 */
@@ -45809,6 +45711,44 @@ module.exports = function(lastTouchEvent, clickTimestamp) {
   }
 };
 
+
+/***/ }),
+/* 501 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ChatWindow = __webpack_require__(206);
+
+var _ChatWindow2 = _interopRequireDefault(_ChatWindow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//Stateless React Component
+//NOT Redux container (doesn't need to know app-level state)
+
+//Map over all matches and create Chat components
+var ChatContainer = function ChatContainer(props) {
+
+  return _react2.default.createElement(
+    'div',
+    null,
+    props.matchedUsers.map(function (user) {
+      return _react2.default.createElement(_ChatWindow2.default, { key: user.name, user: user });
+    })
+  );
+};
+
+exports.default = ChatContainer;
 
 /***/ })
 /******/ ]);

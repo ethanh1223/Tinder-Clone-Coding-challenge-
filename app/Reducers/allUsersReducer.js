@@ -1,3 +1,5 @@
+//Hard-coded user data
+
 export default function() {
   return [
     {name: 'Helen', location: 'San Francisco', photo:'https://img.buzzfeed.com/buzzfeed-static/static/2014-03/enhanced/webdr02/12/19/enhanced-27477-1394667004-5.jpg?crop=402:300;132,-1&downsize=715:*&output-format=auto&output-quality=auto', personalInfo:'I love going for hikes and rock climbing', likeMe: true},

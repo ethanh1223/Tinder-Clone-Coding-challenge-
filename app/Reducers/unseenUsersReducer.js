@@ -1,3 +1,6 @@
+//Initializes with all users
+//Removes users from potential matches after they've been seen
+
 import allUsers from './allUsersReducer.js';
 import { CHOOSE_SWIPE_USER } from '../Actions/index.js';
 
