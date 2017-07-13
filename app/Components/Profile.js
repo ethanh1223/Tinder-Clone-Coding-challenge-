@@ -23,13 +23,13 @@ export default class Profile extends React.Component {
       <FlatButton
         label="Keep Swiping"
         primary={true}
-        onClick={this.props.handleNotificationClose}
+        onClick={this.props.handleNotificationCloseSwipe}
       />,
       <FlatButton
         label="Go to Chat"
         primary={true}
         keyboardFocused={true}
-        onClick={this.props.handleNotificationClose}
+        onClick={this.props.handleNotificationCloseChat}
       />,
     ];
     return (

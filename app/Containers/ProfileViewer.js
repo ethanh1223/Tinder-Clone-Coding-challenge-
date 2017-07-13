@@ -2,9 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { chooseNextSwipeUser, setNextSwipeUser, likeUser } from '../Actions/index.js';
+import { chooseNextSwipeUser, setNextSwipeUser, likeUser, switchTab } from '../Actions/index.js';
 
 import Profile from '../Components/Profile.js';
+
+import { CHAT } from '../Reducers/currentTabReducer.js';
 
 class ProfileViewer extends React.Component {
   constructor(props) {
@@ -17,8 +19,8 @@ class ProfileViewer extends React.Component {
     this.chooseRandomUser = this.chooseRandomUser.bind(this);
     this.swipeRight = this.swipeRight.bind(this);
     this.swipeLeft = this.swipeLeft.bind(this);
-    // this.handleNotificationOpen = this.handleNotificationOpen.bind(this);
-    this.handleNotificationClose = this.handleNotificationClose.bind(this);
+    this.handleNotificationCloseChat = this.handleNotificationCloseChat.bind(this);
+    this.handleNotificationCloseSwipe = this.handleNotificationCloseSwipe.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +40,13 @@ class ProfileViewer extends React.Component {
     this.setState({open: true});
   }
 
-  handleNotificationClose() {
+  handleNotificationCloseChat() {
+    this.setState({open: false});
+    this.props.switchTab(CHAT);
+
+  }
+
+    handleNotificationCloseSwipe() {
     this.setState({open: false});
   }
 
@@ -57,7 +65,7 @@ class ProfileViewer extends React.Component {
   render() {
     if (this.props.unseenUsers.length) {
       return (
-        <Profile handleNotificationClose={this.handleNotificationClose} open={this.state.open} swipeLeft={this.swipeLeft} swipeRight={this.swipeRight} user={this.props.currentSwipeUser} />
+        <Profile handleNotificationCloseSwipe={this.handleNotificationCloseSwipe} handleNotificationCloseChat={this.handleNotificationCloseChat} open={this.state.open} swipeLeft={this.swipeLeft} swipeRight={this.swipeRight} user={this.props.currentSwipeUser} />
       )
     }
      else return (
@@ -75,7 +83,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ chooseNextSwipeUser, setNextSwipeUser, likeUser }, dispatch);
+  return bindActionCreators({ chooseNextSwipeUser, setNextSwipeUser, likeUser, switchTab }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileViewer);

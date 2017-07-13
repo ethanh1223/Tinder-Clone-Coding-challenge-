@@ -1,6 +1,11 @@
+//Set constants for 'types' and export for use throughout the app to avoid typos.
+
 export const CHOOSE_SWIPE_USER = 'CHOOSE_SWIPE_USER';
 export const SET_SWIPE_USER = 'SET_SWIPE_USER';
 export const LIKE_USER = 'LIKE_USER';
+export const SWITCH_TAB = 'SWITCH_TAB';
+
+//Write all action creators
 
 export function chooseNextSwipeUser(randomUserIndex) {
   return {
@@ -22,3 +27,11 @@ export function likeUser(likedUser) {
     payload: likedUser
   }
 }
+
+export function switchTab(clickedTab) {
+  return {
+    type: SWITCH_TAB,
+    payload: clickedTab
+  }
+}
+
