@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": false,
   "scripts": {
-    "start": "webpack --watch & nodemon server/server.js"
+    "start": "webpack & node server/server.js"
   },
   "dependencies": {
     "babel-core": "^6.24.1",
