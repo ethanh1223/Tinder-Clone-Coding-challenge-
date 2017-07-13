@@ -28,7 +28,7 @@ This is the Tinder Clone I built for the Famous.co coding challenge. Including e
 
 
 
-The application is also deployed at: 
+The application is also deployed at: https://arcane-sierra-84128.herokuapp.com/index.html for your demo.
 
 Please contact me for next steps at ethan.m.harry@gmail.com or 713-582-7011. Thanks so much!
 
